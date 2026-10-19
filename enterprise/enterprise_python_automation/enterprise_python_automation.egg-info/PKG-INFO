@@ -1,0 +1,110 @@
+Metadata-Version: 2.4
+Name: enterprise-python-automation
+Version: 1.0.0
+Summary: CSV-driven automated PDF reporting with a command-line interface
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: reportlab>=4.0
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+
+# Enterprise Python Automation Capstone Project
+
+A command-line automation tool that reads transaction-style CSV data, calculates summary statistics, and creates a formatted PDF report. It can also repeat report generation on a configurable interval.
+
+## Features
+- CSV input validation and useful error messages
+- Summary metrics: record count, total, average, and totals by category
+- PDF output with executive summary, category totals, and transaction details
+- CLI commands built with `argparse`
+- Repeating scheduler loop
+- Logging and unit tests with `pytest`
+
+## Requirements
+- Python 3.10+
+- pip
+
+## Setup (Windows PowerShell)
+```powershell
+# Open a terminal in the project folder
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -e ".[dev]"
+```
+
+If PowerShell blocks activation, use Command Prompt instead:
+```bat
+.venv\Scripts\activate.bat
+```
+
+## Generate a report
+```powershell
+report-automation report --input data/sample_data.csv --output output/sales_report.pdf
+```
+
+Alternative without installing the CLI entry point:
+```powershell
+python -m report_automation.cli report --input data/sample_data.csv --output output/sales_report.pdf
+```
+
+## Run the scheduler
+Creates a new timestamped PDF every 60 minutes by default. Stop with `Ctrl+C`.
+```powershell
+python -m report_automation.cli schedule --input data/sample_data.csv --output-dir output --interval 60
+```
+For a quick test, use `--interval 1`.
+
+## Run tests
+```powershell
+python -m pytest -v
+```
+
+## CSV format
+The input CSV must have these columns:
+- `date` — transaction date or label
+- `category` — grouping/category name
+- `amount` — numeric amount
+
+A sample file is included at `data/sample_data.csv`.
+
+## Project structure
+```text
+enterprise_python_automation/
+├── data/
+│   └── sample_data.csv
+├── report_automation/
+│   ├── __init__.py
+│   ├── cli.py
+│   └── report.py
+├── tests/
+│   └── test_report.py
+├── output/                 # generated PDFs are saved here
+├── pyproject.toml
+└── README.md
+```
+
+## Architecture
+```text
+CSV input
+   |
+   v
+CSV validation --> Summary calculations
+                         |
+                         v
+                   PDF report builder
+                         |
+                         v
+                    Output PDF
+
+CLI (argparse) controls one-time reports or scheduled repeats.
+```
+
+## Evidence for mentor review
+1. Push the complete repository to GitHub.
+2. Run one report and include a screenshot of the terminal plus the generated PDF.
+3. Run `python -m pytest -v` and capture the passing test output.
+4. Submit the GitHub repository link and a short screen-recorded walkthrough if requested.
+
+## Limitations
+The scheduler runs only while the process is running. For unattended production scheduling, use Windows Task Scheduler, cron, or a managed job scheduler. Sample data is fictional.

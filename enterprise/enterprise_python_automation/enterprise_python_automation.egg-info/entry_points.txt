@@ -1,0 +1,2 @@
+[console_scripts]
+report-automation = report_automation.cli:main

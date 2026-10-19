@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+enterprise_python_automation.egg-info/PKG-INFO
+enterprise_python_automation.egg-info/SOURCES.txt
+enterprise_python_automation.egg-info/dependency_links.txt
+enterprise_python_automation.egg-info/entry_points.txt
+enterprise_python_automation.egg-info/requires.txt
+enterprise_python_automation.egg-info/top_level.txt
+report_automation/__init__.py
+report_automation/cli.py
+report_automation/report.py
+tests/test_report.py
